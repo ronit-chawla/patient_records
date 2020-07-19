@@ -9,7 +9,7 @@ router.get('/', (req, res) => res.redirect('/patients'));
 //!login etc
 //form
 router.get('/register', (req, res) => {
-	res.render('register');
+	res.render('user/register');
 });
 //add user
 router.post('/register', (req, res) => {
@@ -30,7 +30,7 @@ router.post('/register', (req, res) => {
 });
 //form
 router.get('/login', (req, res) => {
-	res.render('login');
+	res.render('user/login');
 });
 //user login
 router.post(
@@ -44,7 +44,6 @@ router.post(
 //logout
 router.get('/logout', isLoggedIn, (req, res) => {
 	req.logout();
-	req.flash('success', 'Succesfully, logged you out');
 	res.redirect('/login');
 });
 module.exports = router;

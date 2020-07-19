@@ -9,9 +9,10 @@ const express = require('express'),
 	LocalStrategy = require('passport-local'),
 	User = require('./models/user'),
 	passportLocalMongoose = require('passport-local-mongoose'),
-	port = process.env.PORT || 3000;
+	port = process.env.PORT || 3001;
 
 //?require routes
+const indexRoutes = require('./routes/index');
 
 //?mongoose config
 mongoose.set('useNewUrlParser', true);
@@ -47,12 +48,11 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
 	res.locals.currentUser = req.user;
-	res.locals.error = req.flash('error');
-	res.locals.success = req.flash('success');
 	next();
 });
 
 //?routes
+app.use('/', indexRoutes);
 
 //?listen
 app.listen(port, () => {
