@@ -4,6 +4,8 @@ const router = express.Router();
 const User = require('../models/user');
 const passport = require('passport');
 const isLoggedIn = require('../middleware');
+//!index
+router.get('/', (req, res) => res.redirect('/patients'));
 //!login etc
 //form
 router.get('/register', (req, res) => {
@@ -34,7 +36,7 @@ router.get('/login', (req, res) => {
 router.post(
 	'/login',
 	passport.authenticate('local', {
-		successRedirect : '/',
+		successRedirect : '/patients',
 		failureRedirect : '/login'
 	}),
 	(req, res) => {}
