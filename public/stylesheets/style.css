@@ -10,3 +10,15 @@
 	align-items: center;
 	flex-direction: column;
 }
+.center-content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	background-color: #000;
+	height: 95vh;
+	width: 100vw;
+}
+.mt-1 {
+	margin-top: 1rem !important;
+}

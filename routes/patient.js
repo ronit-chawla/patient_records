@@ -80,6 +80,7 @@ router.post(
 			}
 		);
 		const pat = await Patient.find({ ...patient });
+		console.log(pat);
 		Report.create(
 			{
 				...report,

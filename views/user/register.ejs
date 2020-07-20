@@ -1,4 +1,36 @@
 <%- include("../partials/header") %>
+<nav class="ui pointing menu">
+  <a href="/" class="item">
+    Home
+  </a>
+  <a href="/patients" class="item">
+    Patients
+  </a>
+  <a href="/patients/new" class="item">
+    New
+  </a>
+  <% if(currentUser){ %>
+  <a href="/logout" class="item">
+    Logout
+  </a>
+  <a href="/patients" class="item"><%=currentUser.username%> </a>
+  <% } else{%>
+  <a href="/login" class="item">
+    Login
+  </a>
+  <a href="/register" class="active item">
+    Sign Up
+  </a>
+  <% } %>
+  <div class="right menu">
+    <div class="item">
+      <div class="ui transparent icon input">
+        <input type="text" placeholder="Search...">
+        <i class="search link icon"></i>
+      </div>
+    </div>
+  </div>
+</nav>
 <div class="ui center aligned basic segment middle">
   <h1>Create A Account</h1>
   <div class="ui form">

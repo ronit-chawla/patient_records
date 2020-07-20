@@ -1,0 +1,65 @@
+<%- include("../partials/header") %>
+<nav class="ui pointing menu">
+  <a href="/" class="item">
+    Home
+  </a>
+  <a href="/patients" class="active item">
+    Patients
+  </a>
+  <a href="/patients/new" class="item">
+    New
+  </a>
+  <% if(currentUser){ %> 
+    <a href="/logout" class="item">
+      Logout
+    </a>
+    <a href="/patients" class="item"><%=currentUser.username%> </a>
+  <% } else{%>
+    <a href="/login" class="item">
+      Login
+    </a>
+    <a href="/register" class="item">
+      Sign Up
+    </a>
+  <% } %>  
+  <div class="right menu">
+    <div class="item">
+      <div class="ui transparent icon input">
+        <input type="text" placeholder="Search...">
+        <i class="search link icon"></i>
+      </div>
+    </div>
+  </div>
+</nav>
+<section class="ui grid container mt-1">
+  <div class="row">
+    <div class="column">
+      <div class="ui message">
+        <h1 class="ui header">Welcome To Patient Records <%= currentUser.username %> </h1>
+        <p>A Place Where You Can Store All Your Patient Records</p>
+        <a href="/patients/new" class="ui mt-1 primary button">Add Patient</a>
+      </div>
+    </div>
+  </div>
+  <div class="ui cards mt-1">
+    <% for(let patient of allPatients){ %>
+    <%if(currentUser && currentUser._id.equals(patient.doctor.id)){%>
+    <div class="card">
+      <div class="content">
+        <div class="header"><%=`${patient.firstName} ${patient.lastName}`%> </div>
+        <div class="meta"><%=`${patient.age}, ${patient.gender}`%> </div>
+        <div class="description">
+          <div>Category: <%=patient.category%></div>
+          <div>Sub Category 1: <%=patient.subCategory1%></div>
+          <div>Sub Category 2: <%=patient.subCategory2%></div>
+          <div>UHID: <%=patient.uhid%></div>
+        </div>
+        <a href="<%=`/patients/${patient._id}`%> " class="ui mt-1 primary button">More Info</a>
+      </div>
+    </div>
+    <% } %>
+    <% } %>
+  </section>
+</section>
+
+<%-include("../partials/footer") %>
