@@ -1,0 +1,56 @@
+<%- include("../partials/header") %>
+<div class="ui center aligned segment">
+  <h1>Create A New Patient</h1>
+  <div class="ui form">
+    <form action="/patients" method="post">
+      <div class="middle">
+        <div class="fields">
+          <div class="field">
+            <label>Name</label>
+            <input type="text" name="patient[firstName]" placeholder="first name">
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <input type="text" name="patient[lastName]" placeholder="last name">
+          </div>
+          <div class="field">
+            <label>Age</label>
+            <input type="number" name="patient[age]" placeholder="age">
+          </div>
+          <div class="field">
+            <label>Gender</label>
+            <input type="text" name="patient[gender]" placeholder="gender">
+          </div>
+        </div>
+        <div class="fields">
+          <div class="field">
+            <label>uhid</label>
+            <input type="text" name="patient[uhid]" placeholder="uhid">
+          </div>
+          <div class="field">
+            <label>category</label>
+            <input type="text" name="patient[category]" placeholder="category">
+          </div>
+          <div class="field">
+            <label>sub category 1</label>
+            <input type="text" name="patient[subCategory1]" placeholder="sub category 1">
+          </div>
+          <div class="field">
+            <label>sub category 2</label>
+            <input type="text" name="patient[subCategory2]" placeholder="sub category 2">
+          </div>
+        </div>
+      </div>
+      <h4 class="center aligned">Report 1</h4>
+      <div class="field">
+        <label>Date</label>
+        <input type="text" name="report[date]" placeholder="date">
+      </div>
+      <div class="field">
+        <label>Summary</label>
+        <textarea name="report[summary]" placeholder="summary"cols="10"></textarea>
+      </div>
+    </form>
+  </div>
+</div>
+<%-include("../partials/footer") %>

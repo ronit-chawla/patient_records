@@ -12,7 +12,8 @@ const express = require('express'),
 	port = process.env.PORT || 3001;
 
 //?require routes
-const indexRoutes = require('./routes/index');
+const indexRoutes = require('./routes/index'),
+	patientRoutes = require('./routes/patient');
 
 //?mongoose config
 mongoose.set('useNewUrlParser', true);
@@ -53,6 +54,7 @@ app.use((req, res, next) => {
 
 //?routes
 app.use('/', indexRoutes);
+app.use('/patients', patientRoutes);
 
 //?listen
 app.listen(port, () => {
