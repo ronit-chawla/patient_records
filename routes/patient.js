@@ -64,21 +64,38 @@ router.post(
 	'/',
 	/*isLoggedIn,*/ async (req, res) => {
 		const { patient, report } = req.body;
-		await Patient.create({
-			...patient,
-			doctor : {
-				id       : req.user._id,
-				username : req.user.username
+		Patient.create(
+			{
+				...patient,
+				doctor : {
+					id       : req.user._id,
+					username : req.user.username
+				}
+			},
+			err => {
+				if (err) {
+					console.log(err);
+					return res.redirect(back);
+				}
 			}
-		});
+		);
 		const pat = await Patient.find({ ...patient });
-		Report.create({
-			...report,
-			patient : {
-				id   : pat.id,
-				name : `${pat.firstName} ${pat.lastName}`
+		Report.create(
+			{
+				...report,
+				patient : {
+					id   : pat.id,
+					name : `${pat.firstName} ${pat.lastName}`
+				}
+			},
+			err => {
+				if (err) {
+					console.log(err);
+					return res.redirect(back);
+				}
+				return res.redirect(`/patients/${pat._id}`);
 			}
-		});
+		);
 	}
 );
 //destroy
@@ -91,9 +108,7 @@ router.delete(
 		Patient.findByIdAndRemove(pat, err => {
 			if (err) {
 				console.log(err);
-				res.redirect('/patients');
-			} else {
-				res.redirect('/patients');
+				res.redirect('back');
 			}
 		});
 		Report.deleteMany(
@@ -106,7 +121,7 @@ router.delete(
 			err => {
 				if (err) {
 					console.log(err);
-					res.redirect('/patients');
+					res.redirect('back');
 				} else {
 					res.redirect('/patients');
 				}
