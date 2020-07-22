@@ -4,6 +4,7 @@ const router = express.Router({ mergeParams: true });
 const Patient = require('../models/patient');
 const Report = require('../models/report');
 const isLoggedIn = require('../middleware');
+const moment = require('moment');
 
 //new
 router.get('/new', isLoggedIn, (req, res) => {
