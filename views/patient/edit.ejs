@@ -1,0 +1,83 @@
+<%- include("../partials/header") %>
+<nav class="ui pointing menu">
+  <a href="/" class="item">
+    Home
+  </a>
+  <a href="/patients" class="item">
+    Patients
+  </a>
+  <a href="/patients/new" class="item">
+    New
+  </a>
+  <div class="right menu">
+    <% if(currentUser){ %>
+      <a href="/logout" class="item">
+        Logout
+      </a>
+      <a href="/patients" class="item"><%=currentUser.username%> </a>
+      <% } else{%>
+      <a href="/login" class="item">
+        Login
+      </a>
+      <a href="/register" class="item">
+        Sign Up
+      </a>
+      <% } %>
+  </div>
+</nav>
+<div class="center-content">
+  <div class="ui center aligned placeholder segment">
+    <h1>Edit <%=`${patient.firstName} ${patient.lastName}`%> </h1>
+    <div class="ui form">
+      <form action="<%=`/patients/${patient._id}?_method=PUT`%> " method="post">
+        <div class="middle">
+          <div class="fields">
+            <div class="field">
+              <label>First Name</label>
+              <input type="text" name="patient[firstName]" value="<%=  patient.firstName %>">
+            </div>
+            <div class="field">
+              <label>Last Name</label>
+              <input type="text" name="patient[lastName]" value="<%=  patient.lastName %>">
+            </div>
+            <div class="field">
+              <label>Age</label>
+              <input type="number" name="patient[age]" value="<%=  patient.age %>">
+            </div>
+            <div class="field">
+              <label>Gender</label>
+              <select name="patient[gender]">
+                <% if(patient.gender.toLowerCase()==='male') {%>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                <% } else{%>  
+                  <option value="Female">Female</option>
+                  <option value="Male">Male</option>
+                <% } %> 
+              </select>
+            </div>
+          </div>
+          <div class="fields">
+            <div class="field">
+              <label>uhid</label>
+              <input type="text" name="patient[uhid]" value="<%=  patient.uhid %>">
+            </div>
+            <div class="field">
+              <label>category</label>
+              <input type="text" name="patient[category]" value="<%=  patient.category %>">
+            </div>
+            <div class="field">
+              <label>sub category 1</label>
+              <input type="text" name="patient[subCategory1]" value="<%=  patient.subCategory1 %>">
+            </div>
+            <div class="field">
+              <label>sub category 2</label>
+              <input type="text" name="patient[subCategory2]" value="<%=  patient.subCategory2 %>">
+            </div>
+          </div>
+        </div>
+        <button class="ui primary button">Update Patient</button>
+      </form>
+    </div>
+  </div>
+  <%-include("../partials/footer") %>

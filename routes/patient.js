@@ -93,7 +93,9 @@ router.get('/:id/edit', isLoggedIn, (req, res) => {
 //update
 router.put('/:id', isLoggedIn, (req, res) => {
 	const {
-		name,
+		firstName,
+		lastName,
+		uhid,
 		age,
 		gender,
 		category,
@@ -105,8 +107,10 @@ router.put('/:id', isLoggedIn, (req, res) => {
 			console.log(err);
 			return res.redirect('back');
 		}
-		patient.name = name;
+		patient.firstName = firstName;
+		patient.lastName = lastName;
 		patient.age = age;
+		patient.uhid = uhid;
 		patient.gender = gender;
 		patient.category = category;
 		patient.subCategory1 = subCategory1;
