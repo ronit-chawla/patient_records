@@ -77,7 +77,7 @@
             </tbody>
           </table>
           <a href="<%=`/patients/${patient._id}/edit`%>" class="positive ui button">Edit</a>
-          <form action="<%=`/patients/${patient._id}?_method=DELETE`%>" class="inline">
+          <form action="<%=`/patients/${patient._id}?_method=DELETE`%>" method="post" class="inline">
             <button class="negative ui button">Delete</button>
           </form>
         </div>

@@ -122,15 +122,16 @@ router.put('/:id', isLoggedIn, (req, res) => {
 //destroy
 router.delete('/:id', isLoggedIn, async (req, res) => {
 	Patient.findByIdAndRemove(
-		req.params._id,
+		req.params.id,
 		(err, deletedPat) => {
 			if (err) {
 				console.log(err);
 				return res.redirect('back');
 			}
 			for (const report of deletedPat.reports) {
-				Report.findByIdAndRemove(report.id);
+				Report.findByIdAndRemove(report);
 			}
+			return res.redirect('/patients');
 		}
 	);
 });
