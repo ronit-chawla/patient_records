@@ -33,11 +33,11 @@
       <form action="<%=`/patients/${patient._id}/reports`%> " method="post">
           <div class="field">
             <label>Date</label>
-            <input type="date" name="report[date]">
+            <input type="date" required  name="report[date]">
           </div>
           <div class="field">
             <label>Summary</label>
-            <textarea name="report[summary]"></textarea>
+            <textarea required name="report[summary]"></textarea>
             <button class="ui primary button">Add Report</button>
       </form>
     </div>
