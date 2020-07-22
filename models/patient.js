@@ -15,6 +15,14 @@ const PatientSchema = new mongoose.Schema({
 			ref  : 'User'
 		},
 		username : String
-	}
+	},
+	reports      : [
+		{
+			id : {
+				type : mongoose.Schema.Types.ObjectId,
+				ref  : 'Report'
+			}
+		}
+	]
 });
 module.exports = mongoose.model('Patient', PatientSchema);

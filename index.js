@@ -23,7 +23,7 @@ mongoose.set('useUnifiedTopology', true);
 
 mongoose.connect(
 	process.env.DATABASEURL ||
-		'mongodb://localhost:27017/retina_record_app'
+		'mongodb://localhost:27017/patient_record_app'
 );
 
 //?app config
