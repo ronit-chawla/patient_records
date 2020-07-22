@@ -50,7 +50,7 @@ router.get('/', isLoggedIn, (req, res) => {
 	// }
 });
 //new form
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
 	res.render('patient/new');
 });
 
@@ -65,35 +65,29 @@ router.post('/', isLoggedIn, (req, res) => {
 				username : req.user.username
 			}
 		},
-		err => {
+		(err, patient) => {
 			if (err) {
 				console.log(err);
 				return res.redirect(back);
+			} else {
+				Report.create(
+					{
+						...report
+					},
+					(err, report) => {
+						if (err) {
+							console.log(err);
+							return res.redirect(back);
+						}
+						patient.reports.push(report);
+						return res.redirect(
+							`/patients/${patient._id}`
+						);
+					}
+				);
 			}
 		}
 	);
-	Patient.find(patient, (err, patient) => {
-		if (err) {
-			console.log(err);
-			res.redirect('/patients');
-		} else {
-			Report.create(
-				{
-					...report
-				},
-				(err, report) => {
-					if (err) {
-						console.log(err);
-						return res.redirect(back);
-					}
-					patient.reports.push(report);
-					return res.redirect(
-						`/patients/${patient._id}`
-					);
-				}
-			);
-		}
-	});
 });
 
 //edit
@@ -149,7 +143,7 @@ router.delete('/:id', isLoggedIn, async (req, res) => {
 	);
 });
 //show
-router.get('/patients/:id', (req, res) => {
+router.get('/:id', isLoggedIn, (req, res) => {
 	Patient.findById(req.params.id)
 		.populate('reports')
 		.exec((err, foundPat) => {
