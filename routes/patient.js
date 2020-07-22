@@ -138,7 +138,6 @@ router.get('/:id', isLoggedIn, (req, res) => {
 			if (err || !foundPat) {
 				res.redirect('back');
 			} else {
-				console.log(foundPat.reports);
 				res.render('patient/show', {
 					patient : foundPat
 				});

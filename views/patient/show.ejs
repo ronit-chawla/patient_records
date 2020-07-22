@@ -9,19 +9,19 @@
   <a href="/patients/new" class="item">
     New
   </a>
-  <% if(currentUser){ %> 
-    <a href="/logout" class="item">
-      Logout
-    </a>
-    <a href="/patients" class="item"><%=currentUser.username%> </a>
+  <% if(currentUser){ %>
+  <a href="/logout" class="item">
+    Logout
+  </a>
+  <a href="/patients" class="item"><%=currentUser.username%> </a>
   <% } else{%>
-    <a href="/login" class="item">
-      Login
-    </a>
-    <a href="/register" class="item">
-      Sign Up
-    </a>
-  <% } %>  
+  <a href="/login" class="item">
+    Login
+  </a>
+  <a href="/register" class="item">
+    Sign Up
+  </a>
+  <% } %>
   <div class="right menu">
     <div class="item">
       <div class="ui transparent icon input">
@@ -35,7 +35,8 @@
   <div class="row">
     <div class="column">
       <div class="ui padded segment">
-        <h1 class="ui center aligned content header"><%=`Patient Record Of ${patient.firstName} ${patient.lastName}`%></h1>
+        <h1 class="ui center aligned content header"><%=`Patient Record Of ${patient.firstName} ${patient.lastName}`%>
+        </h1>
         <div class="ui divider my-1"></div>
         <div class="description">
           <table class="ui celled table">
@@ -85,8 +86,17 @@
       </div>
     </div>
   </div>
-  <% for(let report of patient.reports) {%> 
-    <h1><%=report.summary%> </h1>
-  <% } %> 
+</section>
+<section class="ui grid container mt-1">
+  <% for(let report of patient.reports) {%>
+    <div class="row">
+      <div class="column">
+        <div class="ui padded placeholder segment">
+          <h1><%=report.summary%> </h1>
+        </div>
+      </div>
+    </div>
+  <% } %>
+  <a href="<%=`/patients/${patient._id}/reports/new`%>" class="positive ui button">New Report</a>
 </section>
 <%-include("../partials/footer") %>

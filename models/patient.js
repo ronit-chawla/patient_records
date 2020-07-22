@@ -18,10 +18,8 @@ const PatientSchema = new mongoose.Schema({
 	},
 	reports      : [
 		{
-			id : {
-				type : mongoose.Schema.Types.ObjectId,
-				ref  : 'Report'
-			}
+			type : mongoose.Schema.Types.ObjectId,
+			ref  : 'Report'
 		}
 	]
 });
