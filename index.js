@@ -13,7 +13,8 @@ const express = require('express'),
 
 //?require routes
 const indexRoutes = require('./routes/index'),
-	patientRoutes = require('./routes/patient');
+	patientRoutes = require('./routes/patient'),
+	reportRoutes = require('./routes/report');
 
 //?mongoose config
 mongoose.set('useNewUrlParser', true);
@@ -55,6 +56,7 @@ app.use((req, res, next) => {
 //?routes
 app.use('/', indexRoutes);
 app.use('/patients', patientRoutes);
+app.use('/patients/:id/reports', reportRoutes);
 //show
 // app.get('/patients/:id', (req, res) => {
 // 	Patient.findById(req.params.id)

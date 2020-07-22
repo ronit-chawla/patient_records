@@ -56,7 +56,7 @@ router.get('/new', isLoggedIn, (req, res) => {
 
 //create
 router.post('/', isLoggedIn, (req, res) => {
-	const { patient, report } = req.body;
+	const { patient } = req.body;
 	Patient.create(
 		{
 			...patient,
@@ -70,20 +70,8 @@ router.post('/', isLoggedIn, (req, res) => {
 				console.log(err);
 				return res.redirect(back);
 			} else {
-				Report.create(
-					{
-						...report
-					},
-					(err, report) => {
-						if (err) {
-							console.log(err);
-							return res.redirect(back);
-						}
-						patient.reports.push(report);
-						return res.redirect(
-							`/patients/${patient._id}`
-						);
-					}
+				return res.redirect(
+					`/patients/${patient._id}`
 				);
 			}
 		}
@@ -150,6 +138,7 @@ router.get('/:id', isLoggedIn, (req, res) => {
 			if (err || !foundPat) {
 				res.redirect('back');
 			} else {
+				console.log(foundPat.reports);
 				res.render('patient/show', {
 					patient : foundPat
 				});

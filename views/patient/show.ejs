@@ -85,6 +85,8 @@
       </div>
     </div>
   </div>
-  <h1><%=patient.reports.summary%> </h1>
+  <% for(let report of patient.reports) {%> 
+    <h1><%=report.summary%> </h1>
+  <% } %> 
 </section>
 <%-include("../partials/footer") %>
