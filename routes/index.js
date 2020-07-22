@@ -13,8 +13,8 @@ router.get('/register', (req, res) => {
 });
 //add user
 router.post('/register', (req, res) => {
-	const { username } = req.body;
-	let newUser = new User({ username });
+	const { username, email } = req.body;
+	let newUser = new User({ username, email });
 	User.register(
 		newUser,
 		req.body.password,
