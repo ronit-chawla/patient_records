@@ -1,0 +1,44 @@
+<%- include("../partials/header") %>
+<nav class="ui pointing menu">
+  <a href="/" class="item">
+    Home
+  </a>
+  <a href="/patients" class="item">
+    Patients
+  </a>
+  <a href="/patients/new" class="item">
+    New
+  </a>
+  <div class="right menu">
+    <% if(currentUser){ %>
+    <a href="/logout" class="item">
+      Logout
+    </a>
+    <a href="/patients" class="item">
+      <%=currentUser.username%> 
+    </a>
+    <% } else{%>
+    <a href="/login" class="item">
+      Login
+    </a>
+    <a href="/register" class="item">
+      Sign Up
+    </a>
+    <% } %>
+  </div>
+  </div>
+</nav>
+<div class="center-content">
+  <div class="ui center aligned placeholder segment">
+    <h1>Edit Report <%= patient.reports.indexOf(report._id) %> </h1>
+    <div class="ui form">
+      <form action="<%=`/patients/${patient._id}/reports/${report._id}?_method=PUT`%> " method="post">
+        <div class="field">
+          <label>Summary</label>
+          <textarea name="summary" cols="100"rows="20"><%= report.summary %> </textarea>
+        </div>
+        <button class="ui primary button">Edit Report</button>
+      </form>
+    </div>
+  </div>
+  <%-include("../partials/footer") %>
