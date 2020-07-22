@@ -1,0 +1,90 @@
+<%- include("../partials/header") %>
+<nav class="ui pointing menu">
+  <a href="/" class="item">
+    Home
+  </a>
+  <a href="/patients" class="item">
+    Patients
+  </a>
+  <a href="/patients/new" class="item">
+    New
+  </a>
+  <% if(currentUser){ %> 
+    <a href="/logout" class="item">
+      Logout
+    </a>
+    <a href="/patients" class="item"><%=currentUser.username%> </a>
+  <% } else{%>
+    <a href="/login" class="item">
+      Login
+    </a>
+    <a href="/register" class="item">
+      Sign Up
+    </a>
+  <% } %>  
+  <div class="right menu">
+    <div class="item">
+      <div class="ui transparent icon input">
+        <input type="text" placeholder="Search...">
+        <i class="search link icon"></i>
+      </div>
+    </div>
+  </div>
+</nav>
+<section class="ui grid container mt-1">
+  <div class="row">
+    <div class="column">
+      <div class="ui padded segment">
+        <h1 class="ui center aligned content header"><%=`Patient Record Of ${patient.firstName} ${patient.lastName}`%></h1>
+        <div class="ui divider my-1"></div>
+        <div class="description">
+          <table class="ui celled table">
+            <thead>
+              <tr>
+                <th>Information</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tr>
+              <td>First Name</td>
+              <td><%=patient.firstName%></td>
+            </tr>
+            <tr>
+              <td>Last Name</td>
+              <td><%=patient.lastName%></td>
+            </tr>
+            <tr>
+            <tr>
+              <td>Age</td>
+              <td><%=patient.age%></td>
+            </tr>
+            <tr>
+            <tr>
+              <td>Gender</td>
+              <td><%=patient.gender%></td>
+            </tr>
+            <tr>
+              <td>Category</td>
+              <td><%=patient.category%></td>
+            </tr>
+            <tr>
+              <td>Sub Category</td>
+              <td><%=patient.subCategory1%></td>
+            </tr>
+            <tr>
+              <td>Sub Category 2</td>
+              <td><%=patient.subCategory2%></td>
+            </tr>
+            <tr>
+              <td>UHID</td>
+              <td><%=patient.uhid%></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h1><%=patient.reports.summary%> </h1>
+</section>
+<%-include("../partials/footer") %>

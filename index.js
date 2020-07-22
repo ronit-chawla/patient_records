@@ -55,6 +55,20 @@ app.use((req, res, next) => {
 //?routes
 app.use('/', indexRoutes);
 app.use('/patients', patientRoutes);
+//show
+// app.get('/patients/:id', (req, res) => {
+// 	Patient.findById(req.params.id)
+// 		.populate('reports')
+// 		.exec((err, foundPat) => {
+// 			if (err || !foundPat) {
+// 				res.redirect('back');
+// 			} else {
+// 				res.render('patient/show', {
+// 					patient : foundPat
+// 				});
+// 			}
+// 		});
+// });
 
 //?listen
 app.listen(port, () => {

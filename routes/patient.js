@@ -49,22 +49,8 @@ router.get('/', isLoggedIn, (req, res) => {
 	});
 	// }
 });
-//show
-router.get('/:id', (req, res) => {
-	Patient.findById(req.params.id)
-		.populate('reports')
-		.exec((err, foundPat) => {
-			if (err || !foundPat) {
-				res.redirect('back');
-			} else {
-				res.render('patient/show', {
-					patient : foundPat
-				});
-			}
-		});
-});
 //new form
-router.get('/new', isLoggedIn, (req, res) => {
+router.get('/new', (req, res) => {
 	res.render('patient/new');
 });
 
@@ -109,6 +95,7 @@ router.post('/', isLoggedIn, (req, res) => {
 		}
 	});
 });
+
 //edit
 router.get('/:id/edit', isLoggedIn, (req, res) => {
 	Patient.findById(req.params.id, (err, foundPatient) => {
@@ -160,6 +147,20 @@ router.delete('/:id', isLoggedIn, async (req, res) => {
 			}
 		}
 	);
+});
+//show
+router.get('/patients/:id', (req, res) => {
+	Patient.findById(req.params.id)
+		.populate('reports')
+		.exec((err, foundPat) => {
+			if (err || !foundPat) {
+				res.redirect('back');
+			} else {
+				res.render('patient/show', {
+					patient : foundPat
+				});
+			}
+		});
 });
 function escapeRegex(text) {
 	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
