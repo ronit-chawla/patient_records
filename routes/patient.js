@@ -24,15 +24,19 @@ router.get('/', isLoggedIn, (req, res) => {
 	) {
 		const search = {};
 		for (const key in req.query) {
-			search[key] = new RegExp(
-				escapeRegex(req.query[key]),
-				'gi'
-			);
+			if (req.query[key]) {
+				search[key] = new RegExp(
+					escapeRegex(req.query[key]),
+					'gi'
+				);
+			}
+		}
+		if (uhidSearch) {
+			search.uhid = uhidSearch;
 		}
 		Patient.find(
 			{
 				...search,
-				uhid   : uhidSearch,
 				doctor : {
 					id       : req.user._id,
 					username : req.user.username
