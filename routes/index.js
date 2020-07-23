@@ -13,25 +13,30 @@ router.get('/register', (req, res) => {
 });
 //add user
 router.post('/register', (req, res) => {
-	const { username, email } = req.body;
+	const {
+		username,
+		email,
+		password,
+		confirmPassword
+	} = req.body;
+	if (password !== confirmPassword) {
+		req.flash('error', "Passwords don't match");
+		return res.redirect('/register');
+	}
 	let newUser = new User({ username, email });
-	User.register(
-		newUser,
-		req.body.password,
-		(err, user) => {
-			if (err) {
-				req.flash('error', err.message);
-				return res.redirect('/register');
-			}
-			passport.authenticate('local')(req, res, () => {
-				req.flash(
-					'success',
-					'Succesfully Created Your Account'
-				);
-				res.redirect('/');
-			});
+	User.register(newUser, password, (err, user) => {
+		if (err) {
+			req.flash('error', err.message);
+			return res.redirect('/register');
 		}
-	);
+		passport.authenticate('local')(req, res, () => {
+			req.flash(
+				'success',
+				'Succesfully Created Your Account'
+			);
+			res.redirect('/');
+		});
+	});
 });
 //form
 router.get('/login', (req, res) => {
