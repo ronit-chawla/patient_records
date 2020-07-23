@@ -83,26 +83,68 @@ router.get('/new', isLoggedIn, (req, res) => {
 //create
 router.post('/', isLoggedIn, (req, res) => {
 	const { patient } = req.body;
-	Patient.create(
-		{
-			...patient,
-			doctor : {
-				id       : req.user._id,
-				username : req.user.username
-			}
-		},
-		(err, patient) => {
+	Patient.find(
+		{ uhid: patient.uhid },
+		(err, foundPatients) => {
 			if (err) {
 				req.flash('error', err.message);
 				return res.redirect(back);
 			} else {
-				req.flash(
-					'success',
-					'Succesfully Created New Patient'
-				);
-				return res.redirect(
-					`/patients/${patient._id}`
-				);
+				if (foundPatients.length > 0) {
+					Patient.create(
+						{
+							...patient,
+							doctor : {
+								id       : req.user._id,
+								username : req.user.username
+							}
+						},
+						(err, patient) => {
+							if (err) {
+								req.flash(
+									'error',
+									err.message
+								);
+								return res.redirect(back);
+							} else {
+								req.flash(
+									'same',
+									'Created Patient. Patient with similar details already exists'
+								);
+								res.redirect(
+									`/patients/${patient._id}`
+								);
+							}
+						}
+					);
+				} else {
+					Patient.create(
+						{
+							...patient,
+							doctor : {
+								id       : req.user._id,
+								username : req.user.username
+							}
+						},
+						(err, patient) => {
+							if (err) {
+								req.flash(
+									'error',
+									err.message
+								);
+								return res.redirect(back);
+							} else {
+								req.flash(
+									'success',
+									'Succesfully Created New Patient'
+								);
+								return res.redirect(
+									`/patients/${patient._id}`
+								);
+							}
+						}
+					);
+				}
 			}
 		}
 	);

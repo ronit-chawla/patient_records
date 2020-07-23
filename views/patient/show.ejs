@@ -92,7 +92,7 @@
       <div class="column">
         <div class="ui padded placeholder segment">
           <h4>Report <%=patient.reports.indexOf(report)+1%> </h4>
-          <h6><%= report.date.toLocaleDateString() %> </h6>
+          <h6><%=report.date && report.date.toLocaleDateString() %> </h6>
           <div><%=report.summary%> </div>
           <a href="<%=`/patients/${patient._id}/reports/${report._id}/edit`%> " class="positive ui button mx-0">
             Edit
