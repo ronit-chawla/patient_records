@@ -57,7 +57,6 @@ app.use((req, res, next) => {
 	res.locals.warning = req.flash('warning');
 	next();
 });
-
 //?routes
 app.use('/', indexRoutes);
 app.use('/patients', patientRoutes);

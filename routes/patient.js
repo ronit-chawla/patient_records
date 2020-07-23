@@ -6,63 +6,74 @@ const Report = require('../models/report');
 const isLoggedIn = require('../middleware');
 //index
 router.get('/', isLoggedIn, (req, res) => {
-	// if (req.query.search) {
-	// 	const regex = new RegExp(
-	// 		escapeRegex(req.query.search),
-	// 		'gi'
-	// 	);
-	// 	Todo.find(
-	// 		{
-	// 			todo   : regex,
-	// 			author : {
-	// 				id       : req.user._id,
-	// 				username : req.user.username
-	// 			}
-	// 		},
-	// 		(err, allTodos) => {
-	// 			if (err) {
-	// 				req.flash('error', err.message);
-	// 				return res.redirect('/');
-	// 			} else {
-	// 				if (allTodos.length < 1) {
-	// 					req.flash(
-	// 						'error',
-	// 						'No Match Found'
-	// 					);
-	// 					return res.redirect('/');
-	// 				}
-	// 				res.render('index', {
-	// 					allTodos
-	// 				});
-	// 			}
-	// 		}
-	// 	);
-	// } else {
-	// doctor       : {
-	// 	id       : {
-	// 		type : mongoose.Schema.Types.ObjectId,
-	// 		ref  : 'User'
-	// 	},
-	// 	username : String
-	// },
-	Patient.find(
-		{
-			doctor : {
-				id       : req.user._id,
-				username : req.user.username
-			}
-		},
-		(err, allPatients) => {
-			if (err) {
-				req.flash('error', err.message);
-			} else {
-				res.render('patient/index', {
-					allPatients
-				});
-			}
+	const {
+		uhid         : uhidSearch,
+		category     : categorySearch,
+		subCategory1 : subCategory1Search,
+		subCategory2 : subCategory2Search,
+		firstName    : firstNameSearch,
+		lastName     : lastNameSearch
+	} = req.query;
+	if (
+		uhidSearch ||
+		categorySearch ||
+		subCategory1Search ||
+		subCategory2Search ||
+		firstNameSearch ||
+		lastNameSearch
+	) {
+		const search = {};
+		for (const key in req.query) {
+			search[key] = new RegExp(
+				escapeRegex(req.query[key]),
+				'gi'
+			);
 		}
-	);
-	// }
+		Patient.find(
+			{
+				...search,
+				doctor : {
+					id       : req.user._id,
+					username : req.user.username
+				}
+			},
+			(err, allPatients) => {
+				if (err) {
+					req.flash('error', err.message);
+					return res.redirect('/');
+				} else {
+					if (allPatients.length < 1) {
+						req.flash(
+							'error',
+							'No Match Found'
+						);
+						return res.redirect('/patients');
+					}
+					res.render('patient/index', {
+						allPatients
+					});
+				}
+			}
+		);
+	} else {
+		Patient.find(
+			{
+				doctor : {
+					id       : req.user._id,
+					username : req.user.username
+				}
+			},
+			(err, allPatients) => {
+				if (err) {
+					req.flash('error', err.message);
+				} else {
+					res.render('patient/index', {
+						allPatients
+					});
+				}
+			}
+		);
+	}
 });
 //new form
 router.get('/new', isLoggedIn, (req, res) => {
@@ -72,59 +83,29 @@ router.get('/new', isLoggedIn, (req, res) => {
 //create
 router.post('/', isLoggedIn, (req, res) => {
 	const { patient } = req.body;
-	if (Patient.find(patient).length < 1) {
-		Patient.create(
-			{
-				...patient,
-				doctor : {
-					id       : req.user._id,
-					username : req.user.username
-				}
-			},
-			(err, patient) => {
-				if (err) {
-					req.flash('error', err.message);
-					return res.redirect(back);
-				} else {
-					req.flash(
-						'success',
-						'Succesfully Created New Patient'
-					);
-					req.flash(
-						'warning',
-						'Patient with similar details already exists'
-					);
-					return res.redirect(
-						`/patients/${patient._id}`
-					);
-				}
+	Patient.create(
+		{
+			...patient,
+			doctor : {
+				id       : req.user._id,
+				username : req.user.username
 			}
-		);
-	} else {
-		Patient.create(
-			{
-				...patient,
-				doctor : {
-					id       : req.user._id,
-					username : req.user.username
-				}
-			},
-			(err, patient) => {
-				if (err) {
-					req.flash('error', err.message);
-					return res.redirect(back);
-				} else {
-					req.flash(
-						'success',
-						'Succesfully Created New Patient'
-					);
-					return res.redirect(
-						`/patients/${patient._id}`
-					);
-				}
+		},
+		(err, patient) => {
+			if (err) {
+				req.flash('error', err.message);
+				return res.redirect(back);
+			} else {
+				req.flash(
+					'success',
+					'Succesfully Created New Patient'
+				);
+				return res.redirect(
+					`/patients/${patient._id}`
+				);
 			}
-		);
-	}
+		}
+	);
 });
 
 //edit

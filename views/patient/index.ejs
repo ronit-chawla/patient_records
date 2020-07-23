@@ -32,6 +32,40 @@
       <div class="ui message">
         <h1 class="ui header">Welcome To Patient Records <%= currentUser.username %> </h1>
         <p>A Place Where You Can Store All Your Patient Records</p>
+        <h3>Search</h3>
+        <div class="ui form">
+          <form action="/patients" method="get">
+            <div class="fields">
+              <div class="field">
+                <label>First Name</label>
+                <input type="text" name="firstName">
+              </div>
+              <div class="field">
+                <label>Last Name</label>
+                <input type="text" name="lastName">
+              </div>
+              <div class="field">
+                <label>UHID</label>
+                <input type="text" name="uhid">
+              </div>
+            </div>
+            <div class="fields">
+              <div class="field">
+                <label>Category</label>
+                <input type="text" name="category">
+              </div>
+              <div class="field">
+                <label>Sub Category 1</label>
+                <input type="text" name="subCategory1">
+              </div>
+              <div class="field">
+                <label>Sub Category 2</label>
+                <input type="text" name="subCategory2">
+              </div>
+            </div>
+            <button class="positive ui button">Search</button>
+          </form>
+        </div>
         <a href="/patients/new" class="ui mt-1 primary button">Add Patient</a>
       </div>
     </div>
