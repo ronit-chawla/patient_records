@@ -1,0 +1,47 @@
+<%- include("partials/header") %>
+<nav class="ui pointing menu">
+  <a href="/" class="item">
+    Home
+  </a>
+  <a href="/patients" class="item">
+    Patients
+  </a>
+  <a href="/patients/new" class="item">
+    New
+  </a>
+  <div class="right menu">
+    <% if(currentUser){ %>
+    <a href="/logout" class="item">
+      Logout
+    </a>
+    <a href="/patients" class="item"><%=currentUser.username%> </a>
+    <% } else{%>
+    <a href="/login" class="item">
+      Login
+    </a>
+    <a href="/register" class="active item">
+      Sign Up
+    </a>
+    <% } %>
+  </div>
+</nav>
+<%- include("partials/mid") %>
+<div class="ui grid container">
+  <div class="row">
+    <div class="column">
+      <div class="ui form">
+        <form action="/forgot" method="POST">
+          <legend>Forgot Password</legend>
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" name="email" autofocus class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="Reset Password">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include("partials/footer") %>

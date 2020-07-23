@@ -1,0 +1,52 @@
+<%- include("partials/header") %>
+<nav class="ui pointing menu">
+  <a href="/" class="item">
+    Home
+  </a>
+  <a href="/patients" class="item">
+    Patients
+  </a>
+  <a href="/patients/new" class="item">
+    New
+  </a>
+  <div class="right menu">
+    <% if(currentUser){ %>
+    <a href="/logout" class="item">
+      Logout
+    </a>
+    <a href="/patients" class="item"><%=currentUser.username%> </a>
+    <% } else{%>
+    <a href="/login" class="item">
+      Login
+    </a>
+    <a href="/register" class="active item">
+      Sign Up
+    </a>
+    <% } %>
+  </div>
+</nav>
+<%- include("partials/mid") %>
+<div class="ui grid container">
+  <div class="row">
+    <div class="column">
+      <div class="ui form">
+        <form action="/reset/<%= token %>" method="POST">
+          <legend>Reset Password</legend>
+          <div class="field">
+            <label for="password">New Password</label>
+            <input type="password" name="password" value="" placeholder="New password" autofocus="autofocus"
+              class="form-control" />
+          </div>
+          <div class="field">
+            <label for="confirm">Confirm Password</label>
+            <input type="password" name="confirm" value="" placeholder="Confirm password" class="form-control" />
+          </div>
+          <div class="field">
+            <button type="submit" class="btn btn-primary">Update Password</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include("partials/footer") %>
