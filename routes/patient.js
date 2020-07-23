@@ -38,15 +38,30 @@ router.get('/', isLoggedIn, (req, res) => {
 	// 		}
 	// 	);
 	// } else {
-	Patient.find({}, (err, allPatients) => {
-		if (err) {
-			console.log(err);
-		} else {
-			res.render('patient/index', {
-				allPatients
-			});
+	// doctor       : {
+	// 	id       : {
+	// 		type : mongoose.Schema.Types.ObjectId,
+	// 		ref  : 'User'
+	// 	},
+	// 	username : String
+	// },
+	Patient.find(
+		{
+			doctor: {
+				id: req.user._id,
+				username: req.user.username
+			}
+		},
+		(err, allPatients) => {
+			if (err) {
+				req.flash('error', err.message);
+			} else {
+				res.render('patient/index', {
+					allPatients
+				});
+			}
 		}
-	});
+	);
 	// }
 });
 //new form
@@ -67,9 +82,13 @@ router.post('/', isLoggedIn, (req, res) => {
 		},
 		(err, patient) => {
 			if (err) {
-				console.log(err);
+				req.flash('error', err.message);
 				return res.redirect(back);
 			} else {
+				req.flash(
+					'success',
+					'Succesfully Created New Patient'
+				);
 				return res.redirect(
 					`/patients/${patient._id}`
 				);
@@ -82,7 +101,7 @@ router.post('/', isLoggedIn, (req, res) => {
 router.get('/:id/edit', isLoggedIn, (req, res) => {
 	Patient.findById(req.params.id, (err, foundPatient) => {
 		if (err) {
-			console.log(err);
+			req.flash('error', err.message);
 			return res.redirect('back');
 		}
 		return res.render('patient/edit', {
@@ -104,7 +123,7 @@ router.put('/:id', isLoggedIn, (req, res) => {
 	} = req.body.patient;
 	Patient.findById(req.params.id, (err, patient) => {
 		if (err) {
-			console.log(err);
+			req.flash('error', err.message);
 			return res.redirect('back');
 		}
 		patient.firstName = firstName;
@@ -116,6 +135,7 @@ router.put('/:id', isLoggedIn, (req, res) => {
 		patient.subCategory1 = subCategory1;
 		patient.subCategory2 = subCategory2;
 		patient.save();
+		req.flash('success', 'Succesfully Updated Patient');
 		res.redirect(`/patients/${patient._id}`);
 	});
 });
@@ -125,12 +145,16 @@ router.delete('/:id', isLoggedIn, async (req, res) => {
 		req.params.id,
 		(err, deletedPat) => {
 			if (err) {
-				console.log(err);
+				req.flash('error', err.message);
 				return res.redirect('back');
 			}
 			for (const report of deletedPat.reports) {
 				Report.findByIdAndRemove(report);
 			}
+			req.flash(
+				'success',
+				'Succesfully Deleted Patient'
+			);
 			return res.redirect('/patients');
 		}
 	);
@@ -141,6 +165,7 @@ router.get('/:id', isLoggedIn, (req, res) => {
 		.populate('reports')
 		.exec((err, foundPat) => {
 			if (err || !foundPat) {
+				req.flash('error', 'No Patient Found');
 				res.redirect('back');
 			} else {
 				res.render('patient/show', {

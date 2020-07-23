@@ -20,9 +20,14 @@ router.post('/register', (req, res) => {
 		req.body.password,
 		(err, user) => {
 			if (err) {
+				req.flash('error', err.message);
 				return res.render('register');
 			}
 			passport.authenticate('local')(req, res, () => {
+				req.flash(
+					'success',
+					'Succesfully Created Your Account'
+				);
 				res.redirect('/');
 			});
 		}
@@ -44,6 +49,7 @@ router.post(
 //logout
 router.get('/logout', isLoggedIn, (req, res) => {
 	req.logout();
+	req.flash('success', 'Succesfully Logged You Out');
 	res.redirect('/login');
 });
 module.exports = router;

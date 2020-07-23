@@ -4,13 +4,13 @@ const router = express.Router({ mergeParams: true });
 const Patient = require('../models/patient');
 const Report = require('../models/report');
 const isLoggedIn = require('../middleware');
-const moment = require('moment');
 
 //new
 router.get('/new', isLoggedIn, (req, res) => {
 	Patient.findById(req.params.id, (err, patient) => {
 		if (err) {
-			console.log(err);
+			req.flash('error', err.message);
+			res.redirect('back');
 		} else {
 			res.render('report/new', {
 				patient
@@ -23,16 +23,20 @@ router.post('/', isLoggedIn, (req, res) => {
 	const { report } = req.body;
 	Patient.findById(req.params.id, (err, patient) => {
 		if (err) {
-			console.log(err);
+			req.flash('error', err.message);
 			res.redirect('back');
 		} else {
 			Report.create(report, (err, report) => {
 				if (err) {
-					console.log(err);
+					req.flash('error', err.message);
 					res.redirect('back');
 				} else {
 					patient.reports.push(report._id);
 					patient.save();
+					req.flash(
+						'success',
+						'Succesfully Created new Report'
+					);
 					res.redirect(
 						`/patients/${patient._id}`
 					);
@@ -45,14 +49,15 @@ router.post('/', isLoggedIn, (req, res) => {
 router.get('/:report_id/edit', isLoggedIn, (req, res) => {
 	Patient.findById(req.params.id, (err, patient) => {
 		if (err || !patient) {
-			console.log(err);
+			req.flash('error', err.message);
 			res.redirect('back');
 		} else {
 			Report.findById(
 				req.params.report_id,
 				(err, report) => {
 					if (err || !report) {
-						console.log(err);
+						req.flash('error', err.message);
+						res.redirect('back');
 						res.redirect('back');
 					} else {
 						res.render('report/edit', {
@@ -69,10 +74,15 @@ router.get('/:report_id/edit', isLoggedIn, (req, res) => {
 router.put('/:report_id', isLoggedIn, (req, res) => {
 	Report.findById(req.params.report_id, (err, report) => {
 		if (err) {
+			res.flash('error', err.message);
 			res.redirect('back');
 		} else {
 			report.summary = req.body.summary;
 			report.save();
+			req.flash(
+				'success',
+				'Succesfully Updated Report'
+			);
 			res.redirect(`/patients/${req.params.id}`);
 		}
 	});
@@ -92,8 +102,13 @@ router.put('/:report_id', isLoggedIn, (req, res) => {
 router.delete('/:report_id', isLoggedIn, (req, res) => {
 	Report.findByIdAndRemove(req.params.report_id, err => {
 		if (err) {
+			res.flash('error', err.message);
 			res.redirect('back');
 		} else {
+			req.flash(
+				'success',
+				'Succesfully Deleted Report'
+			);
 			res.redirect(`/patients/${req.params.id}`);
 		}
 	});
