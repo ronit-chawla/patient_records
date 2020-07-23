@@ -47,9 +47,9 @@ router.get('/', isLoggedIn, (req, res) => {
 	// },
 	Patient.find(
 		{
-			doctor: {
-				id: req.user._id,
-				username: req.user.username
+			doctor : {
+				id       : req.user._id,
+				username : req.user.username
 			}
 		},
 		(err, allPatients) => {
@@ -72,29 +72,59 @@ router.get('/new', isLoggedIn, (req, res) => {
 //create
 router.post('/', isLoggedIn, (req, res) => {
 	const { patient } = req.body;
-	Patient.create(
-		{
-			...patient,
-			doctor : {
-				id       : req.user._id,
-				username : req.user.username
+	if (Patient.find(patient).length < 1) {
+		Patient.create(
+			{
+				...patient,
+				doctor : {
+					id       : req.user._id,
+					username : req.user.username
+				}
+			},
+			(err, patient) => {
+				if (err) {
+					req.flash('error', err.message);
+					return res.redirect(back);
+				} else {
+					req.flash(
+						'success',
+						'Succesfully Created New Patient'
+					);
+					req.flash(
+						'warning',
+						'Patient with similar details already exists'
+					);
+					return res.redirect(
+						`/patients/${patient._id}`
+					);
+				}
 			}
-		},
-		(err, patient) => {
-			if (err) {
-				req.flash('error', err.message);
-				return res.redirect(back);
-			} else {
-				req.flash(
-					'success',
-					'Succesfully Created New Patient'
-				);
-				return res.redirect(
-					`/patients/${patient._id}`
-				);
+		);
+	} else {
+		Patient.create(
+			{
+				...patient,
+				doctor : {
+					id       : req.user._id,
+					username : req.user.username
+				}
+			},
+			(err, patient) => {
+				if (err) {
+					req.flash('error', err.message);
+					return res.redirect(back);
+				} else {
+					req.flash(
+						'success',
+						'Succesfully Created New Patient'
+					);
+					return res.redirect(
+						`/patients/${patient._id}`
+					);
+				}
 			}
-		}
-	);
+		);
+	}
 });
 
 //edit
