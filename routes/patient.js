@@ -32,6 +32,7 @@ router.get('/', isLoggedIn, (req, res) => {
 		Patient.find(
 			{
 				...search,
+				uhid   : uhidSearch,
 				doctor : {
 					id       : req.user._id,
 					username : req.user.username
