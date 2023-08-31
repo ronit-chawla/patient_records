@@ -17,16 +17,16 @@ const indexRoutes = require('./routes/index'),
 	patientRoutes = require('./routes/patient'),
 	reportRoutes = require('./routes/report');
 
-//?mongoose config
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useFindAndModify', false);
-mongoose.set('useCreateIndex', true);
-mongoose.set('useUnifiedTopology', true);
+// //?mongoose config
+// mongoose.set('useNewUrlParser', true);
+// mongoose.set('useFindAndModify', false);
+// mongoose.set('useCreateIndex', true);
+// mongoose.set('useUnifiedTopology', true);
 
-mongoose.connect(
-	process.env.DATABASEURL ||
-		'mongodb://localhost:27017/patient_record_app'
-);
+// mongoose.connect(
+// 	process.env.DATABASEURL ||
+// 		'mongodb://localhost:27017/patient_record_app'
+// );
 
 //?app config
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -77,7 +77,21 @@ app.use('/patients/:id/reports', reportRoutes);
 // 		});
 // });
 
-//?listen
-app.listen(port, () => {
-	console.log(`started `);
-});
+mongoose
+	.connect(
+		process.env.DATABASEURL ||
+			'mongodb://localhost:27017/patient_record_app',
+		{
+			keepAlive          : true,
+			useNewUrlParser    : true,
+			useUnifiedTopology : true
+		}
+	)
+	.then(() =>
+		app.listen(port, () =>
+			console.log(
+				`connect to DB and started server at port 3000`
+			)
+		)
+	)
+	.catch(e => console.log(e));
